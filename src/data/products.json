@@ -1,0 +1,75 @@
+[
+  {
+    "name": "Notebook Raptor X15",
+    "description": "RTX 4070, i7 13ª gen, 16GB RAM, 1TB SSD, 165Hz.",
+    "price": 1899999,
+    "stock": 8,
+    "category": "notebooks",
+    "bestSeller": true,
+    "featured": true
+  },
+  {
+    "name": "Ryzen 7 7800X3D",
+    "description": "8 núcleos, 3D V-Cache, el rey del gaming.",
+    "price": 549999,
+    "stock": 15,
+    "category": "procesadores",
+    "bestSeller": true
+  },
+  {
+    "name": "Monitor Curvo 27\" 240Hz",
+    "description": "Panel VA QHD, 1ms, FreeSync Premium.",
+    "price": 459999,
+    "stock": 12,
+    "category": "monitores",
+    "featured": true
+  },
+  {
+    "name": "RTX 4080 Super 16GB",
+    "description": "Ray tracing y DLSS 3 para jugar en 4K.",
+    "price": 1499999,
+    "stock": 4,
+    "category": "placas",
+    "bestSeller": true
+  },
+  {
+    "name": "Teclado Mecánico Blaze",
+    "description": "Switches red, RGB por tecla, aluminio.",
+    "price": 89999,
+    "stock": 30,
+    "category": "perifericos",
+    "featured": true
+  },
+  {
+    "name": "Intel Core i9-14900K",
+    "description": "24 núcleos, hasta 6.0 GHz.",
+    "price": 749999,
+    "stock": 6,
+    "category": "procesadores",
+    "featured": true
+  },
+  {
+    "name": "Mouse Viper Pro 26K",
+    "description": "Ultraliviano 58g, sensor 26.000 DPI.",
+    "price": 69999,
+    "stock": 40,
+    "category": "perifericos",
+    "bestSeller": true
+  },
+  {
+    "name": "Notebook Phantom 14",
+    "description": "RTX 4060, Ryzen 9, OLED 2.8K 120Hz.",
+    "price": 1599999,
+    "stock": 5,
+    "category": "notebooks",
+    "featured": true
+  },
+  {
+    "name": "Monitor 32\" 4K 144Hz",
+    "description": "IPS, HDR600, HDMI 2.1 para consolas.",
+    "price": 799999,
+    "stock": 7,
+    "category": "monitores",
+    "bestSeller": true
+  }
+]
