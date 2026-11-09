@@ -34,43 +34,41 @@ const registerUser = async (req, res) => {
 }
 
 const loginUser = async (req, res) => {
-    try {
-            const body = req.body;
-        const {
-            email,
-            password
-        } = body;
+  try {
+    const { email, password } = req.body;
 
-        if (!email || !password) {
-            return res.status(400).json({
-                error: "Email y contraseña son requeridos"
-            });
-        }
-
-        const foundUser = await User.findOne({
-            email
-        });
-
-        const isValid = await bcrypt.compare(password, foundUser.password);
-        if (!isValid) {
-            return res.status(401).json({
-                error: "Credenciales invalidas"
-            });
-        }
-
-
-        const token = jwt.sign({ email: foundUser.email }, "contraseñasecreta", { expiresIn: "1h" });
-
-        res.json({ 
-    token, 
-    user: { email: foundUser.email } 
-});
-    } catch (e) {
-        res.status(500).json({
-            error: e.message
-        })
+    if (!email || !password) {
+      return res.status(400).json({ error: "Email y contraseña son requeridos" });
     }
-}
+
+    const foundUser = await User.findOne({ email });
+    
+    // 1. Si no existe el usuario, respondemos 401 directo
+    if (!foundUser) {
+      return res.status(401).json({ error: "Credenciales inválidas" });
+    }
+
+    // 2. Si existe, recién ahí comparamos la contraseña
+    const isValid = await bcrypt.compare(password, foundUser.password);
+    if (!isValid) {
+      return res.status(401).json({ error: "Credenciales inválidas" });
+    }
+
+    const token = jwt.sign(
+      { id: foundUser._id, email: foundUser.email }, 
+      "contraseñasecreta", 
+      { expiresIn: "1h" }
+    );
+
+    res.json({ 
+      token, 
+      user: { id: foundUser._id, email: foundUser.email } 
+    });
+  } catch (e) {
+    res.status(500).json({ error: "Error interno del servidor", details: e.message });
+  }
+};
+
 export {
     registerUser,
     loginUser

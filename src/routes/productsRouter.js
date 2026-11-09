@@ -1,5 +1,6 @@
 import {Router} from "express";
 import { getAllProducts, getProductById, createProduct, updateProduct, deleteProduct } from "../controllers/productsControllers.js";
+import { authMiddleware } from "../middlewares/authMiddleware.js";
 
 const productsRouter = Router();
 
@@ -10,13 +11,13 @@ productsRouter.get("/", getAllProducts);
 productsRouter.get("/:id", getProductById);
 
 //creación de un nuevo elemento
-productsRouter.post("/", createProduct);
+productsRouter.post("/", authMiddleware, createProduct);
 
 //edición de un elemento
-productsRouter.put("/:id", updateProduct);
+productsRouter.put("/:id", authMiddleware, updateProduct);
 
 //eliminación de un elemento
-productsRouter.delete("/:id", deleteProduct);
+productsRouter.delete("/:id", authMiddleware, deleteProduct);
 
 
 
