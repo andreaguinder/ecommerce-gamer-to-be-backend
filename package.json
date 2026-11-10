@@ -12,7 +12,8 @@
   "type": "module",
   "main": "app.js",
   "scripts": {
-    "dev": "node --watch ./src/app.js"
+    "dev": "node --watch app.js",
+    "start": "node app.js"
   },
   "dependencies": {
     "bcryptjs": "^3.0.3",

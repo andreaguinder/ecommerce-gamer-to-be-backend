@@ -1,10 +1,10 @@
 import express from "express";
 import cors from 'cors';
 import 'dotenv/config';
-import { productsRouter } from "./routes/productsRouter.js";
-import { connectDB } from "./config/connectDB.js";
-import { authRouter } from "./routes/authRouter.js";
-import { contactRouter } from "./routes/contactRouter.js";
+import { productsRouter } from "./src/routes/productsRouter.js";
+import { connectDB } from "./src/config/connectDB.js";
+import { authRouter } from "./src/routes/authRouter.js";
+import { contactRouter } from "./src/routes/contactRouter.js";
 
 
 const server = express();
