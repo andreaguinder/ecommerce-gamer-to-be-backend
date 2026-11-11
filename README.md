@@ -1,8 +1,9 @@
 # 🚀 Gamer To Be — Backend API
 
-API RESTful desarrollada para gestionar el ecosistema e-commerce de **Gamer To Be**, permitiendo la administración de catálogo de productos, procesamiento de mensajes de contacto y gestión de usuarios con autenticación segura por roles (Admin/User).
+API RESTful desarrollada para gestionar el ecosistema e-commerce de **Gamer To Be**, permitiendo la administración completa del catálogo de productos, procesamiento de mensajes de contacto y gestión de usuarios con autenticación segura por roles (Admin/User) mediante JWT.
 
-Desplegado y disponible públicamente en Render.
+🌐 **Enlace al Backend en Producción (Render):** [https://gamer-to-be.onrender.com](https://gamer-to-be.onrender.com) *(reemplazá con tu URL exacta si difiere)*  
+💻 **Frontend asociado (Vercel):** [https://gamer-to-be.vercel.app/](https://gamer-to-be.vercel.app/)
 
 ---
 
@@ -18,6 +19,22 @@ Desplegado y disponible públicamente en Render.
 
 ---
 
+## 📂 Estructura del Proyecto
+
+El proyecto sigue una arquitectura modular separada por responsabilidades:
+
+```text
+src/
+├── config/         # Configuración de base de datos (MongoDB Atlas)
+├── controllers/    # Lógica de negocio (auth, contact, products)
+├── middlewares/    # Control de autenticación y seguridad (JWT)
+├── models/         # Esquemas de Mongoose (User, Product, Contact)
+├── routes/         # Endpoints de la API (authRouter, contactRouter, productsRouter)
+└── app.js          # Configuración de Express, CORS y middlewares globales
+```
+
+---
+
 ## ⚙️ Instalación y Ejecución Local
 
 ### Prerrequisitos
@@ -28,9 +45,8 @@ Desplegado y disponible públicamente en Render.
 
 1. **Clonar el repositorio y navegar a la carpeta del servidor:**
    ```bash
-   git clone <URL_DE_TU_REPOSITO>
-   cd gamer-to-be/backend
-
+   git clone <https://github.com/andreaguinder/ecommerce-gamer-to-be-backend.git>
+   ```
 
 2. **Instalar las dependencias**
 
@@ -49,7 +65,7 @@ JWT_SECRET=tu_clave_secreta_super_segura
 
 > *Nota: Si usás MongoDB local, podés usar `mongodb://localhost:27017/nombre_de_tu_base`. Si usás MongoDB Atlas, pegá tu URI completa de la nube.*
 
-### 4. Ejecutar la aplicación
+4. Ejecutar la aplicación
 
 ```bash
     npm run dev
@@ -72,20 +88,9 @@ Registra un nuevo usuario en la plataforma.
 }
 ```
 
-*Response (201 Created)*
-```json
-{
-  "message": "Usuario registrado exitosamente",
-  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkXVC...",
-  "user": {
-    "id": "6732a1b9e...",
-    "name": "Usuario Gamer",
-    "email": "usuario@example.com",
-    "role": "user"
-  }
-}
-```
-POST /auth/login
+*Response (201 Created): Retorna un mensaje de éxito, el token JWT y los datos del usuario.*
+
+#### POST /auth/login
 Autentica un usuario y genera el token JWT.
 
 Acceso: Público
@@ -97,21 +102,11 @@ Acceso: Público
   "password": "adminpassword"
 }
 ```
-*Response (200 OK)*
-```json
-{
-  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkXVC...",
-  "user": {
-    "id": "6732a1b9e...",
-    "name": "Admin Gamer",
-    "email": "admin@gamertobe.com",
-    "role": "admin"
-  }
-}
-```
+*Response (200 OK): Retorna el token JWT y el rol del usuario (admin o user)*
+
 
 📦 Productos (/products)
-GET /products
+#### GET /products
 Obtiene la lista completa de productos.
 
 Acceso: Público
@@ -128,59 +123,51 @@ Acceso: Público
     "stock": 10,
     "image": "[https://url-imagen.com/rtx4070.jpg](https://url-imagen.com/rtx4070.jpg)"
   }
-]
+],
+...
 ```
 
-PUT /products/:id
-Actualiza un producto existente por su ID.
-
-Acceso: Privado (Solo Admin)
+#### POST /products
+Crea un nuevo producto en el catálogo. (Acceso: Privado - Solo Admin)
 
 Header: Authorization: Bearer <TOKEN_JWT>
+
+*Request Body: Mismos campos que el esquema de producto.*
+
+*Response (201 Created): Retorna el objeto creado con su ID de MongoDB.*
+
+
+#### PUT /products/:id
+Actualiza un producto existente por su ID. (Acceso: Privado - Solo Admin)
+
+Header: Authorization: Bearer <TOKEN_JWT>
+
+*Request Body: Campos a modificar (ej. price, stock).*
+
+*Response (200 OK): {"message": "Producto actualizado correctamente"}*
+
+
+#### DELETE /products/:id
+Elimina un producto de la base de datos. (Acceso: Privado - Solo Admin)
+
+Header: Authorization: Bearer <TOKEN_JWT>
+
+*Response (200 OK): {"message": "Producto eliminado exitosamente"}*
+
+---
+
+✉️ Contacto (/contact)
+#### POST /contact
+Recibe y almacena un mensaje de consulta enviado desde el formulario web del frontend. (Acceso: Público)
 *Request Body*
 ```json
 {
-  "price": 48000,
-  "stock": 12
-}
-```
-*Response (200 OK)*
-```json
-{
-"message": "Producto actualizado correctamente"
-}
-```
-DELETE /products/:id
-Elimina un producto de la base de datos.
-
-Acceso: Privado (Solo Admin)
-
-Header: Authorization: Bearer <TOKEN_JWT>
-*Response (200 OK)*
-```json
-{
-"message": "Producto eliminado exitosamente"
-}
-```
-
-POST /contact
-Recibe y almacena un mensaje de contacto enviado desde el frontend.
-
-Acceso: Público
-*Request Body*
-```json
-{
-"name": "Juan Pérez",
+  "name": "Juan Pérez",
   "email": "juan@example.com",
   "message": "Hola, quisiera consultar stock sobre la placa RTX 4070."
 }
 ```
-*Response (201 Created)*
-```json
-{
-  "message": "Mensaje enviado con éxito"
-}
-```
+*Response (201 Created): {"message": "Mensaje enviado con éxito"}*
 
 ## 👤 Créditos y Datos de la Entrega
 
@@ -188,10 +175,12 @@ Estudiante: Andrea Guinder
 
 Curso: 181805
 
-Unidad 3 - Express, Mongo DB
-
-Entrega: Tarea N° 3
+Entrega: Tp 4 / Proyecto Final Integrador Backend
 
 ## 📚 Bibliografía y Fuentes
 
-Material de lectura, documentación oficial del Curso de Node.js y revisión de grabación de clase, de la Universidad Tecnológica Nacional (UTN).
+Documentación oficial de Node.js y Express.js.
+
+Material de lectura teórico, prácticas y grabaciones de clases del curso de Programación Web Full Stack de la Universidad Tecnológica Nacional (UTN BA).
+
+Documentación de Mongoose y MongoDB Atlas.
