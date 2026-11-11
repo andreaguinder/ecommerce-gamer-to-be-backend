@@ -43,7 +43,7 @@ const loginUser = async (req, res) => {
             return res.status(401).json({ error: "Credenciales inválidas" });
         }
 
-        // Firmamos el token usando JWT_SECRET
+        
         const token = jwt.sign(
             { id: foundUser._id, email: foundUser.email }, 
             JWT_SECRET, 
